@@ -1,0 +1,24 @@
+# Vector store
+faiss-cpu==1.13.2
+
+# UI
+gradio==6.6.0
+
+# LangChain ecosystem
+langchain==1.2.10
+langchain-community==0.4.1
+langchain-core==1.2.14
+langchain-google-genai==4.2.1
+langchain-ollama==1.0.1
+langchain-text-splitters==1.1.1
+
+# Google Cloud
+google-cloud-aiplatform==1.138.0
+
+# Data
+numpy==2.4.2
+pandas==3.0.1
+
+# Utilities
+python-dotenv==1.2.1
+youtube-transcript-api==1.2.1
