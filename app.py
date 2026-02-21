@@ -31,15 +31,15 @@ def get_transcript(url):
     transcript = ""
     for t in transcripts:
         # Check if the transcript's language is English
-        if t.language_code == 'en':
-            if t.is_generated: # auto-generated
-                # If no transcript has been set yet, use the auto-generated one
-                if len(transcript) == 0:
-                    transcript = t.fetch()
-            else:
-                # If a manually created transcript is found, use it (overrides auto-generated)
+        # if t.language_code == 'en':
+        if t.is_generated: # auto-generated
+            # If no transcript has been set yet, use the auto-generated one
+            if len(transcript) == 0:
                 transcript = t.fetch()
-                break  # Prioritize the manually created transcript, exit the loop
+        else:
+            # If a manually created transcript is found, use it (overrides auto-generated)
+            transcript = t.fetch()
+            break  # Prioritize the manually created transcript, exit the loop
     
     return transcript if transcript else None
 
@@ -82,8 +82,8 @@ def setup_credentials():
     model_id = "gemini-2.5-flash"
 
     # Read GCP project and location from environment variables
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT", "hale-woodland-485616-m2")
-    location = os.environ.get("GOOGLE_CLOUD_LOCATION", "europe-west3") # Frankfurt
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    location = os.environ.get("GOOGLE_CLOUD_LOCATION") # Frankfurt
 
     return model_id, project_id, location
 
@@ -157,11 +157,17 @@ def create_qa_chain():
     """Create an LCEL pipeline for question answering using video context and chat history."""
     qa_template = """
     You are an expert assistant providing detailed and accurate answers based on the following video content.
+
     Your responses should be:
     1. Precise and free from repetition
     2. Consistent with the information provided in the video
     3. Well-organized and easy to understand
     4. Focused on addressing the user's question directly
+
+    IMPORTANT MULTILINGUAL INSTRUCTIONS:
+    1. The 'Relevant Video Context' may be in a different language than the user's question.
+    2. You must comprehend the context regardless of its original language.
+    3. ALWAYS reply in the exact same language that the user asked the question in, unless they explicitly ask you to translate.
 
     If you encounter conflicting information in the video content, use your best judgment to provide the most likely correct answer based on context.
 
@@ -276,7 +282,7 @@ def main():
             additional_inputs=[video_url, session_state]
         )
 
-    interface.launch(share=True, server_name="0.0.0.0", server_port=7860, theme=gr.themes.Ocean())
+    interface.launch(server_name="0.0.0.0", server_port=7860, theme=gr.themes.Ocean())
 
 
 if __name__ == "__main__":
