@@ -1,4 +1,3 @@
-# Import necessary libraries for the YouTube bot
 import os
 import gradio as gr
 import re  # For extracting video id
@@ -277,7 +276,7 @@ def main():
             additional_inputs=[video_url, session_state]
         )
 
-    interface.launch(server_name="0.0.0.0", server_port=7860, theme=gr.themes.Ocean())
+    interface.launch(share=True, server_name="0.0.0.0", server_port=7860, theme=gr.themes.Ocean())
 
 
 if __name__ == "__main__":
