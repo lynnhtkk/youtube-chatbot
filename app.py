@@ -240,8 +240,6 @@ def chat_logic(message, history, url, session_state):
         elif turn["role"] == "assistant":
             formatted_history += f"Assistant: {turn['content'][0]['text']}\n"
 
-    print(formatted_history)
-
     relevant_document = faiss_index.similarity_search(message, k=7)
     formatted_context = "\n\n".join([doc.page_content for doc in relevant_document])
 
