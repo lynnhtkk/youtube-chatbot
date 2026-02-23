@@ -3,6 +3,7 @@ faiss-cpu==1.13.2
 
 # UI
 gradio==6.6.0
+huggingface-hub==0.34.3
 
 # LangChain ecosystem
 langchain==1.2.10
